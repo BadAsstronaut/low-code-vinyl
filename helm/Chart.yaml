@@ -1,0 +1,11 @@
+apiVersion: v2
+name: low-code-vinyl
+description: A helm chart for a low-code vinyl (records) management platform
+type: application
+version: 0.1.0
+appVersion: "1.16.0"
+maintainers:
+  - name: Mickey
+    email: kyle.mickey@gmail.com
+sources:
+  - https://github.com/badasstronaut/low-code-vinyl

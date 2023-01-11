@@ -4,6 +4,12 @@ This is a proof-of-concept application using [appsmith](https://github.com/appsm
 
 The solution is containerized and developed locally using Kubernetes.
 
+### To-do:
+
+- Add appsmith
+-- redis
+-- mongo
+
 ## Local environment setup
 
 ### To install docker:
@@ -76,6 +82,4 @@ sudo systemctl start docker
 
 1. Create the `kind` cluster
 
-        kind create cluster --name low-code-vinyl
-
-1.
+        scripts/check_create_kind_cluster

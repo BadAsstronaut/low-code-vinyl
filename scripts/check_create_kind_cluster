@@ -1,0 +1,19 @@
+#!/bin/bash
+
+## Creates the cluster if it does not exist
+
+if ! command -v kind &> /dev/null; then
+    echo "Kind not installed."
+    exit 1
+fi
+
+cluster_name='low-code-vinyl'
+
+for el in $(kind get clusters); do
+    if [[ "$el" == "$cluster_name" ]]; then
+        echo "Cluster $cluster_name exists"
+        exit 0
+    fi
+done
+
+kind create cluster --name "$cluster_name"
