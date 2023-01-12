@@ -1,0 +1,6 @@
+dependencies:
+- name: appsmith
+  repository: https://helm.appsmith.com
+  version: 2.0.0
+digest: sha256:c8766c7585f29ed13315d9501666a79f952d13102c25cb81113bce653b9860fe
+generated: "2023-01-11T15:51:28.909871571-07:00"

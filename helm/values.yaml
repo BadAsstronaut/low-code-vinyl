@@ -4,15 +4,16 @@
 
 replicaCount: 1
 
+containerName: low-code-vinyl-api
+
 image:
-  repository: nginx
-  pullPolicy: IfNotPresent
-  # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  repository: low-code-vinyl-api # Built locally from the ./vinyl_api
+  pullPolicy: Never
+  tag: latest
 
 imagePullSecrets: []
 nameOverride: ""
-fullnameOverride: ""
+fullnameOverride: low-code-vinyl-api
 
 serviceAccount:
   # Specifies whether a service account should be created
@@ -41,6 +42,8 @@ securityContext:
 service:
   type: ClusterIP
   port: 80
+  nodePort: 8000
+  portName: vinyl-api
 
 ingress:
   enabled: false
@@ -49,11 +52,7 @@ ingress:
     {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
-  hosts:
-    - host: chart-example.local
-      paths:
-        - path: /
-          pathType: ImplementationSpecific
+  hosts: []
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
@@ -84,3 +83,74 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+appsmith/appsmith:
+  redis:
+    enabled: true
+    auth:
+      enabled: false
+    replica:
+      replicaCount: 1
+
+  mongodb:
+    enabled: true
+    service:
+      nameOverride: appsmith-mongodb
+    auth:
+      rootUser: root
+      rootPassword: password
+    replicaCount: 2
+    architecture: "replicaset"
+    replicaSetName: rs0
+
+  image:
+    repository: appsmith/appsmith-ce
+    pullPolicy: IfNotPresent
+    tag: "latest"
+
+  serviceAccount:
+    create: true
+
+  storageClass:
+    enabled: false
+
+  persistence:
+    enabled: true
+    storageClass: ""
+    annotations: {}
+    localStorage: false
+    storagePath: /tmp/hostpath_pv
+    localCluster:
+      - minikube
+    accessModes:
+      - ReadWriteOnce
+    size: 10Gi
+
+  applicationConfig:
+    APPSMITH_OAUTH2_GOOGLE_CLIENT_ID: ""
+    APPSMITH_OAUTH2_GOOGLE_CLIENT_SECRET: ""
+    APPSMITH_OAUTH2_GITHUB_CLIENT_ID: ""
+    APPSMITH_OAUTH2_GITHUB_CLIENT_SECRET: ""
+    APPSMITH_FORM_LOGIN_DISABLED: ""
+    APPSMITH_SIGNUP_DISABLED: ""
+    APPSMITH_CLIENT_LOG_LEVEL: ""
+    APPSMITH_GOOGLE_MAPS_API_KEY: ""
+    APPSMITH_MAIL_ENABLED: ""
+    APPSMITH_MAIL_HOST: ""
+    APPSMITH_MAIL_PORT: ""
+    APPSMITH_MAIL_USERNAME: ""
+    APPSMITH_MAIL_PASSWORD: ""
+    APPSMITH_MAIL_FROM: ""
+    APPSMITH_REPLY_TO: ""
+    APPSMITH_MAIL_SMTP_AUTH: ""
+    APPSMITH_MAIL_SMTP_TLS_ENABLED: ""
+    APPSMITH_DISABLE_TELEMETRY: ""
+    APPSMITH_RECAPTCHA_SITE_KEY: ""
+    APPSMITH_RECAPTCHA_SECRET_KEY: ""
+    APPSMITH_RECAPTCHA_ENABLED: ""
+    APPSMITH_MONGODB_URI: ""
+    APPSMITH_REDIS_URL: ""
+    APPSMITH_ENCRYPTION_PASSWORD: ""
+    APPSMITH_ENCRYPTION_SALT: ""
+    APPSMITH_CUSTOM_DOMAIN: ""
+    APPSMITH_DISABLE_IFRAME_WIDGET_SANDBOX: "false"

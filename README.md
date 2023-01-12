@@ -6,9 +6,7 @@ The solution is containerized and developed locally using Kubernetes.
 
 ### To-do:
 
-- Add appsmith
--- redis
--- mongo
+
 
 ## Local environment setup
 
@@ -83,3 +81,5 @@ sudo systemctl start docker
 1. Create the `kind` cluster
 
         scripts/check_create_kind_cluster
+
+1.

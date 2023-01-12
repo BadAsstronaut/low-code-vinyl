@@ -9,3 +9,7 @@ maintainers:
     email: kyle.mickey@gmail.com
 sources:
   - https://github.com/badasstronaut/low-code-vinyl
+dependencies:
+  - name: appsmith
+    version: 2.0.0
+    repository: https://helm.appsmith.com

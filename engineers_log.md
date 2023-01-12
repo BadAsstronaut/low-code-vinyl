@@ -28,3 +28,31 @@ While trying to follow the vanilla k8s instructions at [appsmith](https://docs.a
 I ended up editing the `values.yml` file and updating it to only pull on command. This worked well, then I learned about `kubectl` port-forward and everything makes sense finally.
 
 I got `appsmith` up and running; now I want to figure out how to extend the chart to add my own resources in k8s and then repackage that... Anyways, major progress on k8s today.
+
+### 2023-01-11
+
+I spent some time reading up on storage persistence on k8s. I don't quite grok it yet but I'm trying to be patient. How do I backup/persist volumes mapped to containers? It looks like k8s has a different abstraction. Sure enough, hitting the docs:
+
+> Storage orchestration Kubernetes allows you to automatically mount a storage system of your choice, such as local storages, public cloud providers, and more.
+
+[source](https://kubernetes.io/docs/concepts/overview/#why-you-need-kubernetes-and-what-can-it-do)
+
+I asked ChatGPT and it looks like there's a k8s API for creating a configMap or secret. Learning a lot here.
+
+To focus on getting an operational POC (before configuring persistent storage), I changed gears to get the `appsmith` install working via a local chart config.
+
+I thought I would be able to build the container I want to serve locally, but it looks like there are some extra steps using [`kind`](https://kind.sigs.k8s.io/docs/user/local-registry/). Or I could use `kind load docker-image` [per this](https://kind.sigs.k8s.io/docs/user/quick-start/#loading-an-image-into-your-cluster). Since I only need to work with the one API image I think it will be easy enough to make a build & load script. This was a bit of a tangential learning curve, though!
+
+I managed to get the API running via helm install with:
+```
+$ docker build -t low-code-vinyl-api vinyl_api
+$ kind load docker-image low-code-vinyl-api --name low-code-vinyl
+```
+
+Then, I can run the helm charts against the cluster with:
+```
+$ helm install low-code-vinyl helm
+$ kubectl port-forward "$(kubectl get pods --namespace default -l "app.kubernetes.io/name=low-code-vinyl,app.kubernetes.io/instance=low-code-vinyl" -o jsonpath="{.items[0].metadata.name}")" 8080:8000
+```
+
+I'm able to see that the API works when navigating to http://localhost:8080!
