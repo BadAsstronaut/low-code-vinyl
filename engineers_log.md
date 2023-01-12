@@ -56,3 +56,23 @@ $ kubectl port-forward "$(kubectl get pods --namespace default -l "app.kubernete
 ```
 
 I'm able to see that the API works when navigating to http://localhost:8080!
+
+### 2023-01-12
+
+I have `appsmith` added as a dependency to the API. It starts when I install my `low-code-vinyl` helm chart; however it does not initialize fully. I see Mongo and Redis are also being provisioned. Also, this is dumb but... the name getting generated for the low-code-vinyl pod looks like `low-code-vinyl-api-78657df7bb-94rcz` rather than `low-code-vinyl-api-0`. But we'll worry about that later. The `appsmith` issue:
+
+    low-code-vinyl-appsmith-0          0/1     Init:0/2           0             21m
+
+This of course leads to [init containers](https://kubernetes.io/docs/concepts/workloads/pods/init-containers/). And look there's even an article on [Debug Init Containers](https://kubernetes.io/docs/tasks/debug/debug-application/debug-init-containers/).
+
+I observe that `appsmith` uses a `statefulset` template rather than a `deployment` template. This led me to feel like I need a better grounding in the k8s documentation, again, to understand what a `deployment` vs a `statefulset` looks like and to better understand how Helm generates the configuration.
+
+Thanks [k8s docs](https://kubernetes.io/docs/concepts/workloads/)!
+
+>Kubernetes provides several built-in workload resources:
+>-    Deployment and ReplicaSet (replacing the legacy resource ReplicationController). Deployment is a good fit for managing a stateless application workload on your cluster, where any Pod in the Deployment is interchangeable and can be replaced if needed.
+>-    StatefulSet lets you run one or more related Pods that do track state somehow. For example, if your workload records data persistently, you can run a StatefulSet that matches each Pod with a PersistentVolume. Your code, running in the Pods for that StatefulSet, can replicate data to other Pods in the same StatefulSet to improve overall resilience.
+
+I truly expected choosing k8s with Helm over `docker-compose` would only add a few hours to my project as I could adapt my deep knowledge of containerization to this paradigm. There's a lot that's not even passingly familiar; too many k8s-specific terms. I'm making progress and learning a lot though.
+
+We want to change the helm-generated deployment.yml file with a StatefulSet. Also, re: the appsmith issue, it appears the pod may not have the right networking to the mongo and redis containers. I will need to look into that a little more if moving to a StatefulSet does not resolve the issue.

@@ -13,7 +13,7 @@ image:
 
 imagePullSecrets: []
 nameOverride: ""
-fullnameOverride: low-code-vinyl-api
+fullnameOverride: ""
 
 serviceAccount:
   # Specifies whether a service account should be created
@@ -39,9 +39,11 @@ securityContext:
   # runAsNonRoot: true
   # runAsUser: 1000
 
+strategyType: RollingUpdate
+
 service:
   type: ClusterIP
-  port: 80
+  port: 8000
   nodePort: 8000
   portName: vinyl-api
 

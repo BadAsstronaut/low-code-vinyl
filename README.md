@@ -48,6 +48,11 @@ sudo systemctl start docker
     sudo mv ./kind /usr/local/bin/kind
     ```
 
+1. Add bash completion
+    ```
+    kind completion bash | sudo tee /etc/bash_completion.d/kind > /dev/null
+    ```
+
 ### To install kubectl:
 
 [source](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/)
@@ -57,6 +62,10 @@ sudo systemctl start docker
 1.     echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list
 1.     sudo apt-get update
 1.     sudo apt-get install -y kubectl
+1. Add bash completion
+    ```
+    kubectl completion bash | sudo tee /etc/bash_completion.d/kubectl > /dev/null
+    ```
 
 ### To install helm:
 
@@ -75,6 +84,11 @@ sudo systemctl start docker
 1. Move the helm binary to a directory in your PATH by running the following command:
 
         sudo mv ./linux-amd64/helm /usr/local/bin/helm
+
+1. Add bash completion
+    ```
+    helm completion bash | sudo tee /etc/bash_completion.d/helm > /dev/null
+    ```
 
 ## Running the application
 
