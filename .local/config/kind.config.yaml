@@ -1,0 +1,16 @@
+# Configuration file for k8s-in-docker (kind)
+# References:
+#   - https://kind.sigs.k8s.io/docs/user/configuration/
+#   - https://stackoverflow.com/a/66804104/4175701
+
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+
+nodes:
+  - role: control-plane
+    extraMounts:
+      # TODO: Template so it references PWD instead of my machine
+      - hostPath: /home/mickey/Projects/low-code-vinyl/.local/volumes/appsmith
+        containerPath: /appsmith
+      - hostPath: /home/mickey/Projects/low-code-vinyl/.local/volumes/postgres
+        containerPath: /postgres

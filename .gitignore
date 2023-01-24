@@ -3,3 +3,9 @@
 
 # Python development files
 .venv
+
+# Local docker volumes
+.local/volumes
+
+# Helm charts
+helm/charts

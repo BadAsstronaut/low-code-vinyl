@@ -108,3 +108,13 @@ Remaining questions?
 - Add `appsmith` to the `Chart.yaml` dependencies?
 
     I think this is the way to go... I could add templates but I don't need to customize it. I think I've learned enough now to figure out the right overrides for Mongo DB and Redis (the way I installed it before did not resolve and kept `appsmith` from starting)
+
+### 2023-01-23
+
+Plan:
+
+- ~~Set up `kind` config to mount a persistant volume from the filesystem~~
+- ~~Add `appsmith` as a dependency to my chart~~
+- ~~Add `postgres` as a dependency to my chart~~
+- Add `appsmith` parameters to `values.yaml`
+- Get `appsmith` running

@@ -1,0 +1,32 @@
+#!/bin/bash
+
+## Creates the cluster if it does not exist
+
+if ! command -v kind &> /dev/null; then
+    echo "Kind not installed."
+    exit 1
+fi
+
+# Check if kind config exists
+kind_cfg="${KIND_CFG:-/home/mickey/Projects/low-code-vinyl/.local/config/kind.config.yaml}"
+
+if [[ ! -f $kind_cfg ]]; then
+    echo "Kind config not found at $kind_cfg."
+    exit 1
+fi
+
+# Check if cluster already exists
+cluster_name='low-code-vinyl'
+
+for el in $(kind get clusters); do
+    if [[ "$el" == "$cluster_name" ]]; then
+        echo "Cluster $cluster_name exists"
+        exit 0
+    fi
+done
+
+kind create cluster --name "$cluster_name" --config "$kind_cfg"
+
+# load a docker image for appsmith into the kind cluster
+docker pull appsmith/appsmith-ce
+kind load docker-image appsmith/appsmith-ce --name "$cluster_name"
