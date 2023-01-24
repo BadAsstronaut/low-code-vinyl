@@ -4,15 +4,35 @@
 
 replicaCount: 1
 
-apiImage:
-  repository: low-code-vinyl-api # Built locally from the ./vinyl_api
-  pullPolicy: Never
-  tag: latest
+vinyl_api:
+  apiImage:
+    repository: low-code-vinyl-api # Built locally from the ./vinyl_api
+    pullPolicy: Never
+    tag: latest
 
-appsmithImage:
-  repository: appsmith/appsmith-ce
-  pullPolicy: IfNotPresent
-  tag: latest
+appsmith:
+  redis:
+    enabled: true
+    auth:
+      enabled: false
+    replica:
+      replicaCount: 1
+
+  mongodb:
+    enabled: true
+    service:
+      nameOverride: appsmith-mongodb
+    auth:
+      rootUser: root
+      rootPassword: password
+    replicaCount: 2
+    architecture: "replicaset"
+    replicaSetName: rs0
+
+  image:
+    repository: appsmith/appsmith-ce
+    pullPolicy: IfNotPresent
+    tag: latest
 
 appsmithConfig:
   APPSMITH_OAUTH2_GOOGLE_CLIENT_ID: ""
@@ -36,8 +56,8 @@ appsmithConfig:
   APPSMITH_RECAPTCHA_SITE_KEY: ""
   APPSMITH_RECAPTCHA_SECRET_KEY: ""
   APPSMITH_RECAPTCHA_ENABLED: ""
-  APPSMITH_MONGODB_URI: ""
-  APPSMITH_REDIS_URL: ""
+  APPSMITH_MONGODB_URI: appsmith-mongodb.default.svc.cluster.local
+  APPSMITH_REDIS_URL: low-code-vinyl-redis-master.default.svc.cluster.local
   APPSMITH_ENCRYPTION_PASSWORD: ""
   APPSMITH_ENCRYPTION_SALT: ""
   APPSMITH_CUSTOM_DOMAIN: ""

@@ -10,12 +10,9 @@ maintainers:
 sources:
   - https://github.com/badasstronaut/low-code-vinyl
 dependencies:
-  # Adapted from appsmith's helm chart https://github.com/appsmithorg/appsmith/blob/release/deploy/helm/Chart.yaml
-  - condition: redis.enabled
-    name: redis
-    version: 17.0.10
-    repository: https://charts.bitnami.com/bitnami
-  - condition: mongodb.enabled
-    name: mongodb
-    version: 10.31.5
+  - name: appsmith
+    version: 2.0.0
+    repository: https://helm.appsmith.com
+  - name: postgresql
+    version: 12.1.9
     repository: https://charts.bitnami.com/bitnami
