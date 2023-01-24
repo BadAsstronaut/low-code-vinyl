@@ -116,5 +116,15 @@ Plan:
 - ~~Set up `kind` config to mount a persistant volume from the filesystem~~
 - ~~Add `appsmith` as a dependency to my chart~~
 - ~~Add `postgres` as a dependency to my chart~~
-- Add `appsmith` parameters to `values.yaml`
+- ~~Add `appsmith` parameters to `values.yaml`~~
 - Get `appsmith` running
+
+### 2023-01-24
+
+I couldn't get `appsmith` running due to a problem. The statefulset template does not reference the provided redis URL in the init containers. Opened an issue on [github](https://github.com/appsmithorg/appsmith/issues/20047)
+
+As soon as I discovered the issue,
+
+- Set mongo and redis to `false` for `appsmith` dependency values
+- Add mongo and redis as dependencies on `Chart.yaml`
+- Update URLs and auth values to reflect updates
